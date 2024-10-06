@@ -47,7 +47,7 @@ exports.addProduct = async (req, res) => {
 // Update product
 exports.updateProduct = async (req, res) => {
     const {id} = req.params;
-    const {name, price, smallDetails, bigDescription} = req.body;
+    const {name, price, smallDetails, bigDescription, categoryId, subcategoryId} = req.body;
 
     if (!name || !price || !smallDetails) {
         return res.status(400).json({error: 'Missing required product fields'});
@@ -59,7 +59,7 @@ exports.updateProduct = async (req, res) => {
     }
 
     try {
-        await Product.update(id, {name, price, smallDetails, bigDescription, image});
+        await Product.update(id, {name, price, subcategoryId, smallDetails, bigDescription, image});
         res.json({message: 'Product updated successfully'});
     } catch (err) {
         res.status(500).json({error: 'Failed to update product'});

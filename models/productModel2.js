@@ -4,7 +4,7 @@ const Product = {
     getAll: () => {
         return new Promise((resolve, reject) => {
             db.query('SELECT products.id, products.name, products.price, products.small_details, products.big_description, ' +
-                'products.image_path, subcategories.name AS subcategory, categories.name as category FROM products, subcategories, categories ' +
+                'products.image_path, subcategories.id AS subcategoryId,subcategories.name AS subcategory, categories.id as categoryId,categories.name as category FROM products, subcategories, categories ' +
                 'WHERE products.subcategory_id = subcategories.id AND ' +
                 'subcategories.category_id = categories.id', (err, results) => {
                 if (err) return reject(err);
@@ -48,8 +48,8 @@ const Product = {
                 );
             } else {
                 db.query(
-                    'UPDATE products SET name = ?, price = ?, small_details = ?, big_description = ? WHERE id = ?',
-                    [data.name, data.price, data.smallDetails, data.bigDescription, id],
+                    'UPDATE products SET name = ?, price = ?, subcategory_id = ?, small_details = ?, big_description = ? WHERE id = ?',
+                    [data.name, data.price, data.subcategoryId, data.smallDetails, data.bigDescription, id],
                     (err, results) => {
                         if (err) return reject(err);
                         resolve(results);
