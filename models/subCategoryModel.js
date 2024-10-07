@@ -4,7 +4,7 @@ const Subcategory = {
     getAll: () => {
         return new Promise((resolve, reject) => {
             db.query(`
-                SELECT subcategories.id, subcategories.name, categories.name AS categoryName 
+                SELECT subcategories.id, subcategories.name, categories.id AS categoryId,categories.name AS categoryName 
                 FROM subcategories 
                 JOIN categories ON subcategories.category_id = categories.id
             `, (err, results) => {

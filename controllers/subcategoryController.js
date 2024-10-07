@@ -36,12 +36,12 @@ exports.addSubcategory = async (req, res) => {
 // Update subcategory
 exports.updateSubcategory = async (req, res) => {
     const { id } = req.params;
-    const { name, categoryName } = req.body;
-    const categoryId = await Category.getIdByName(categoryName);
+    const { name, categoryId } = req.body;
+    // const categoryId = await Category.getIdByName(categoryName);
     if (!name || !categoryId) return res.status(400).json({ error: 'Subcategory name and categoryId are required' });
 
     try {
-        await Subcategory.update(id, name, categoryId.id);
+        await Subcategory.update(id, name, categoryId);
         res.json({ message: 'Subcategory updated successfully' });
     } catch (err) {
         res.status(500).json({ error: 'Failed to update subcategory' });
