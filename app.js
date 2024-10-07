@@ -18,6 +18,9 @@ app.use(express.json());
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/Website/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.use(express.static(path.join(__dirname, 'dist')));
+
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);      // Product CRUD operations
