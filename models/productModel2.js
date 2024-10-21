@@ -3,7 +3,7 @@ const db = require('../config/db');
 const Product = {
     getAll: () => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT products.id, products.name, products.price, products.small_details, products.big_description, ' +
+            db.query('SELECT products.id, products.name, products.price, products.unit, products.small_details, products.big_description, ' +
                 'products.image_path, subcategories.id AS subcategoryId,subcategories.name AS subcategory, categories.id as categoryId,categories.name as category FROM products, subcategories, categories ' +
                 'WHERE products.subcategory_id = subcategories.id AND ' +
                 'subcategories.category_id = categories.id', (err, results) => {
@@ -14,7 +14,7 @@ const Product = {
     },
     getById: (id) => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT products.id, products.name, products.price, products.small_details, products.big_description, products.image_path, subcategories.name as subcategory, categories.name as category FROM products ' +
+            db.query('SELECT products.id, products.name, products.price, products.unit, products.small_details, products.big_description, products.image_path, subcategories.name as subcategory, categories.name as category FROM products ' +
                 'JOIN subcategories on products.subcategory_id = subcategories.id ' +
                 'JOIN categories on subcategories.category_id = categories.id WHERE products.id = ? ', [id], (err, results) => {
                 if (err) return reject(err);
@@ -22,11 +22,11 @@ const Product = {
             });
         });
     },
-    create: (name, price, smallDetails, bigDescription, image, subcategoryId) => {
+    create: (name, price, unit, smallDetails, bigDescription, image, subcategoryId) => {
         return new Promise((resolve, reject) => {
             db.query(
-                'INSERT INTO products (subcategory_id, name, price, small_details, big_description, image_path) VALUES (?, ?, ?, ?, ?, ?)',
-                [subcategoryId, name, price, smallDetails, bigDescription, image],
+                'INSERT INTO products (subcategory_id, name, price, unit, small_details, big_description, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [subcategoryId, name, price, unit, smallDetails, bigDescription, image],
                 (err, results) => {
                     if (err) return reject(err);
                     resolve(results.insertId);
@@ -39,8 +39,8 @@ const Product = {
 
             if (data.image != null) {
                 db.query(
-                    'UPDATE products SET name = ?, price = ?, small_details = ?, big_description = ?, image_path = ? WHERE id = ?',
-                    [data.name, data.price, data.smallDetails, data.bigDescription, data.image, id],
+                    'UPDATE products SET name = ?, price = ?, unit = ?, small_details = ?, big_description = ?, image_path = ? WHERE id = ?',
+                    [data.name, data.price, data.unit, data.smallDetails, data.bigDescription, data.image, id],
                     (err, results) => {
                         if (err) return reject(err);
                         resolve(results);
@@ -48,8 +48,8 @@ const Product = {
                 );
             } else {
                 db.query(
-                    'UPDATE products SET name = ?, price = ?, subcategory_id = ?, small_details = ?, big_description = ? WHERE id = ?',
-                    [data.name, data.price, data.subcategoryId, data.smallDetails, data.bigDescription, id],
+                    'UPDATE products SET name = ?, price = ?, unit = ?, subcategory_id = ?, small_details = ?, big_description = ? WHERE id = ?',
+                    [data.name, data.price, data.unit, data.subcategoryId, data.smallDetails, data.bigDescription, id],
                     (err, results) => {
                         if (err) return reject(err);
                         resolve(results);
